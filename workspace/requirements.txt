@@ -1,0 +1,6 @@
+psycopg2-binary
+bokeh
+chart_studio
+numpy
+scipy
+python-dotenv

@@ -1,0 +1,12 @@
+
+.env
+
+venv/
+.idea/
+workspace/spark-warehouse/
+workspace/.ipynb_checkpoints/
+workspace/output/
+workspace/.empty/
+workspace/postgresql-42.2.8.jar
+workspace/.env
+**/.DS_Store

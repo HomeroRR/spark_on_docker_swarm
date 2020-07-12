@@ -1,0 +1,44 @@
+# docker stack deploy -c stack.yml jupyter
+# optional pgadmin container
+version: "3.7"
+networks:
+  demo-net:
+services:
+  spark:
+    image: jupyter/all-spark-notebook:latest
+    ports:
+    - "8888:8888/tcp"
+    - "8889:8889/tcp"
+    - "4040:4040/tcp"
+    networks:
+    - demo-net
+    working_dir: /home/$USER/workspace
+    environment:
+      CHOWN_HOME: "yes"
+      GRANT_SUDO: "yes"
+      NB_UID: 1000
+      NB_GID: 100
+      NB_USER: $USER
+      NB_GROUP: staff
+    user: root
+    deploy:
+     replicas: 1
+     restart_policy:
+       condition: on-failure
+    volumes:
+    - $PWD/workspace:/home/$USER/workspace
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: $POSTGRES_CONTAINER_PASSWORD
+      POSTGRES_DB: bakery
+    ports:
+    - "5432:5432/tcp"
+    networks:
+    - demo-net
+    volumes:
+    - $HOME/data/postgres:/var/lib/postgresql/data
+    deploy:
+     restart_policy:
+       condition: on-failure
